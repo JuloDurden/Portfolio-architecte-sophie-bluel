@@ -1,7 +1,7 @@
 // Affichage des fiches via l'API
-// Récupération des travaux depuis le back-end
-const reponse = await fetch('http://localhost:5678/api/works');
-const travaux = await reponse.json();
+    // Récupération des travaux depuis le back-end
+    const reponse = await fetch('http://localhost:5678/api/works');
+    const travaux = await reponse.json();
     console.log('Réponse API :', reponse);
     console.log('Récupération Travaux :', travaux);
 
@@ -34,3 +34,22 @@ const travaux = await reponse.json();
     }
     // Affichage des fiches
     genererFiche(travaux);
+
+
+// Création des boutons de tri
+    // Récupération des catégories depuis le back-end
+    const reponseCat = await fetch('http://localhost:5678/api/categories')
+    console.log('Réponse Catégories :', reponseCat);
+    const categories = await reponseCat.json();
+    console.log('Récupération Catégories :', categories);
+
+    // Génération des boutons de tri
+    function genererBtnTri(categories) {
+        for (let i = 0; i < categories.length; i++) {
+
+            const categorie = categories.name[i];
+            console.log('Catégories :', categorie);
+            // Récupération de l'élément du DOM qui accueillera le travail
+            const boutonsTri = document.querySelector('.portfolio')
+        }
+    }

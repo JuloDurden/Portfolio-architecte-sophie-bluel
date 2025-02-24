@@ -44,12 +44,20 @@
     console.log('Récupération Catégories :', categories);
 
     // Génération des boutons de tri
-    function genererBtnTri(categories) {
+    function genererBtnTri(categories, catTravail) {
         for (let i = 0; i < categories.length; i++) {
 
-            const categorie = categories.name[i];
-            console.log('Catégories :', categorie);
-            // Récupération de l'élément du DOM qui accueillera le travail
-            const boutonsTri = document.querySelector('.portfolio')
+            const categorieName = categories[i];
+            console.log('Catégories :', categorieName);
+            // Récupération de l'élément du DOM qui accueillera les boutons
+            const boutonsTri = document.querySelector('.portfolio');
+            // Création d'un bouton dédié à la catégorie
+            const boutonCategorie = document.createElement('button');
+            boutonCategorie.innerText = categorieName;
+            // On rattache la balise bouton au portfolio
+            boutonsTri.appendChild(boutonCategorie);
+            boutonCategorie.appendChild(catTravail);
+
         }
     }
+    genererBtnTri(categories);

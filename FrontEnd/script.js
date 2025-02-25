@@ -1,19 +1,53 @@
-// Affichage des fiches via l'API
-    // Récupération des travaux depuis le back-end
+// Récupération des travaux depuis le back-end
     const reponse = await fetch('http://localhost:5678/api/works');
     const travaux = await reponse.json();
     console.log('Réponse API :', reponse);
     console.log('Récupération Travaux :', travaux);
 
-    // Génération de la fiche d'un travail
-    function genererFiche(travaux) {    
-        for (let i = 0; i < travaux.length; i++) {
+// Récupération des catégories uniques
+    const categories = ['Tous', ...[...new Set(travaux.map(travail => travail.category.name))]];
+    console.log('Catégories uniques :', categories);
 
-            const travail = travaux[i];
-            console.log('Travail:', travail);
-            // Récupération de l'élément du DOM qui accueillera le travail
-            const galleryTravaux = document.querySelector('.gallery');
-            console.log('Div class="gallery" trouvée:', galleryTravaux);
+// Création de l'élément pour les boutons de tri
+    const portfolioSection = document.getElementById('portfolio');
+    const boutonsTri = document.createElement('div');
+    boutonsTri.className = 'boutons-tri';
+    portfolioSection.insertBefore(boutonsTri, portfolioSection.querySelector('.gallery'));
+
+// Création des boutons de tri par catégorie
+    categories.forEach(categorie => {
+        const boutonTri = document.createElement('button');
+        boutonTri.innerText = categorie;
+        boutonTri.dataset.categorie = categorie;
+        boutonsTri.appendChild(boutonTri);
+    });
+
+// Ajout d'un événement de click sur les boutons de tri
+    document.querySelectorAll('.boutons-tri button').forEach(boutonTri => {
+        boutonTri.addEventListener('click', () => {
+            // Suppression de la classe button-active des autres boutons
+            document.querySelectorAll('.boutons-tri button').forEach(bouton => {
+                bouton.classList.remove('active');
+            });
+            // Ajout de la classe button-active au bouton cliqué
+            boutonTri.classList.add('active');
+            const categorie = boutonTri.dataset.categorie;
+            if (categorie === 'Tous') {
+                genererFiche(travaux);
+            } else {
+                const travauxFiltres = travaux.filter(travail => travail.category.name === categorie);
+                genererFicheFiltree(travauxFiltres);
+            };
+        });
+    });
+
+// Génération de la fiche d'un travail
+    function genererFiche(travaux) {
+        // Récupération de l'élément du DOM qui accueillera le travail
+        const galleryTravaux = document.querySelector('.gallery');
+        console.log('Div class="gallery" trouvée:', galleryTravaux);
+        galleryTravaux.innerHTML = '';
+        travaux.forEach(travail => {
             // Création d'une fiche dédiée à un travail
             const ficheTravail = document.createElement('figure');
             // Création des balises nécessaires
@@ -21,43 +55,34 @@
             imageTravail.src = travail.imageUrl;
             const nomTravail =  document.createElement('figcaption');
             nomTravail.innerText = travail.title;
-            // Création de la balise catégorie pour la gérer sans l'afficher
-            const catTravail = document.createElement("p");
-            // catTravail.innerText = travail.category.name;
-
             // On rattache la balise fiche à la section Travaux
             galleryTravaux.appendChild(ficheTravail);
             ficheTravail.appendChild(imageTravail);
             ficheTravail.appendChild(nomTravail);
-            ficheTravail.appendChild(catTravail);
-        }
+            // Création de la balise catégorie pour la gérer sans l'afficher
+            // const catTravail = document.createElement("p");
+            // catTravail.innerText = travail.category.name;
+        });
     }
-    // Affichage des fiches
+
+// Fonction pour afficher les travaux filtrés
+    function genererFicheFiltree(travaux) {
+        const galleryTravaux = document.querySelector('.gallery');
+        galleryTravaux.innerHTML = '';
+        travaux.forEach( travail => {
+            const ficheTravail = document.createElement('figure');
+            const imageTravail = document.createElement('img');
+            imageTravail.src = travail.imageUrl;
+            const nomTravail =  document.createElement('figcaption');
+            nomTravail.innerText = travail.title;
+            galleryTravaux.appendChild(ficheTravail);
+            ficheTravail.appendChild(imageTravail);
+            ficheTravail.appendChild(nomTravail);
+        })
+
+    }
+
+
+// Affichage des fiches
     genererFiche(travaux);
-
-
-// Création des boutons de tri
-    // Récupération des catégories depuis le back-end
-    const reponseCat = await fetch('http://localhost:5678/api/categories')
-    console.log('Réponse Catégories :', reponseCat);
-    const categories = await reponseCat.json();
-    console.log('Récupération Catégories :', categories);
-
-    // Génération des boutons de tri
-    function genererBtnTri(categories, catTravail) {
-        for (let i = 0; i < categories.length; i++) {
-
-            const categorieName = categories[i];
-            console.log('Catégories :', categorieName);
-            // Récupération de l'élément du DOM qui accueillera les boutons
-            const boutonsTri = document.querySelector('.portfolio');
-            // Création d'un bouton dédié à la catégorie
-            const boutonCategorie = document.createElement('button');
-            boutonCategorie.innerText = categorieName;
-            // On rattache la balise bouton au portfolio
-            boutonsTri.appendChild(boutonCategorie);
-            boutonCategorie.appendChild(catTravail);
-
-        }
-    }
-    genererBtnTri(categories);
+    document.querySelector('.boutons-tri button[data-categorie="Tous"]').classList.toggle('active');

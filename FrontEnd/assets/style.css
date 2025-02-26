@@ -100,7 +100,12 @@ nav li {
 	font-size: 1.2em;
 }
 
+a:visited {
+	color: inherit;
+}
+
 nav a {
+	color: inherit;
 	text-decoration: none;
 }
 

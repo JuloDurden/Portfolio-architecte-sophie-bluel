@@ -32,11 +32,12 @@
             // Ajout de la classe button-active au bouton cliqué
             boutonTri.classList.add('active');
             const categorie = boutonTri.dataset.categorie;
+            console.log('Catégorie trouvée:', categorie);
             if (categorie === 'Tous') {
                 genererFiche(travaux);
             } else {
                 const travauxFiltres = travaux.filter(travail => travail.category.name === categorie);
-                genererFicheFiltree(travauxFiltres);
+                genererFiche(travauxFiltres);
             };
         });
     });
@@ -64,24 +65,6 @@
             // catTravail.innerText = travail.category.name;
         });
     }
-
-// Fonction pour afficher les travaux filtrés
-    function genererFicheFiltree(travaux) {
-        const galleryTravaux = document.querySelector('.gallery');
-        galleryTravaux.innerHTML = '';
-        travaux.forEach( travail => {
-            const ficheTravail = document.createElement('figure');
-            const imageTravail = document.createElement('img');
-            imageTravail.src = travail.imageUrl;
-            const nomTravail =  document.createElement('figcaption');
-            nomTravail.innerText = travail.title;
-            galleryTravaux.appendChild(ficheTravail);
-            ficheTravail.appendChild(imageTravail);
-            ficheTravail.appendChild(nomTravail);
-        })
-
-    }
-
 
 // Affichage des fiches
     genererFiche(travaux);

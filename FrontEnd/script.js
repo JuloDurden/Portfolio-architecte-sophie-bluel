@@ -1,7 +1,7 @@
 // Récupération des travaux depuis le back-end
     const reponse = await fetch('http://localhost:5678/api/works');
     const travaux = await reponse.json();
-    console.log('Réponse API :', reponse);
+    console.log('Réponse API script :', reponse);
     console.log('Récupération Travaux :', travaux);
 
 // Récupération des catégories uniques

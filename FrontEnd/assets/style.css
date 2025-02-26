@@ -112,6 +112,7 @@ nav a {
 li:hover {
 	color: #B1663C;
 }
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -220,7 +221,7 @@ button:hover {
 
 #login {
 	width: 50%;
-	padding-top: 150px;
+	padding: 150px 0;
 	margin: auto;
 }
 
@@ -264,9 +265,15 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
-footer nav ul {
+footer {
+	height: 60px;
 	display: flex;
 	justify-content: flex-end;
+	align-items: center;
+	background-color: #FFFFFF;
+}
+
+footer nav ul {
 	margin: 2em
 }
 

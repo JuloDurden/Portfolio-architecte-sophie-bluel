@@ -221,7 +221,7 @@ button:hover {
 
 #login {
 	width: 50%;
-	margin: 150px auto;
+	margin: 150px auto 100px auto;
 }
 
 #login h2 {
@@ -259,6 +259,12 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+
+#error-message {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 footer {

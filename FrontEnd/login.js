@@ -16,7 +16,7 @@
         .then((data) => {
             if (data.error) {
                 console.log('Erreur de connexion');
-                document.getElementById('error-message').innerText = 'Informations de connexion incorrectes';
+                document.getElementById('error-message').innerHTML = '<i class=\"fa-solid fa-triangle-exclamation\"></i><p>Informations de connexion incorrectes</p>';
             } else {
                 console.log('Connexion réussie');
                 // On stocke le token et le userId dans le stockage local ou une variable

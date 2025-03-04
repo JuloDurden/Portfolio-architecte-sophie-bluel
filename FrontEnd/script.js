@@ -69,3 +69,6 @@
 // Affichage des fiches
     genererFiche(travaux);
     document.querySelector('.boutons-tri button[data-categorie="Tous"]').classList.toggle('active');
+
+
+export { boutonsTri };

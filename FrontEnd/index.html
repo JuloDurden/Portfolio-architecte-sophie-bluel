@@ -62,6 +62,40 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+	<a href="#modal1" class="js-modal">Ouvrir la boîte modale</a>
+	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
+		<div class="modal-wrapper">
+			<div id="modal-gallery">
+				<h3 id="titlemodal1">Galerie photo</h3>
+				<div class="galleryMod">
+					<!-- Ici devrait s'insérer le code de genererFicheModal-->
+				</div>
+				<div id="separator"></div>
+				<button id="add-photo">Ajouter une photo</button>
+			</div>
+			<div id="modal-addphoto" style="display: none;">
+				<h3 id="titlemodal2">Ajout photo</h3>
+				<div class="add-frame">
+					<i class="fa-regular fa-image fa-5x"></i>
+					<button>+ Ajouter photo</button>
+					<p>jpg, png : 4mo max</p>
+				</div>
+				<form action="#" method="post">
+					<label for="title">Titre</label>
+					<input type="text" name="title" id="title">
+					<label for="category">Catégorie</label>
+					<select name="category" id="category">
+						<option value="none" selected></option>
+						<option value="objects">Objets</option>
+						<option value="appartments">Appartements</option>
+						<option value="hotels-restaurants">Hotels & restaurants</option>
+					</select>
+					<div id="separator"></div>
+					<button id="validate" disabled>Valider</button>
+				</form>
+			</div>
+		</div>
+	</aside>
 </main>
 
 <footer>

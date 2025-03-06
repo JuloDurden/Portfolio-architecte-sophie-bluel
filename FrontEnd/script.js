@@ -42,6 +42,17 @@
         });
     });
 
+// Génération des options du select
+const select = document.getElementById('category');
+categories.forEach(categorie => {
+    if (categorie !== 'Tous') {
+        const option = document.createElement('option');
+        option.value = categorie.toLowerCase().replace(/\s/g, '-');
+        option.textContent = categorie;
+        select.appendChild(option);
+    }
+});
+
 // Génération de la fiche d'un travail
     function genererFiche(travaux) {
         // Récupération de l'élément du DOM qui accueillera le travail
@@ -82,6 +93,24 @@
             // ficheTravail.appendChild(travailTrash);
         })
     }
+
+// Changer le contenu de la modale en cliquant sur le bouton "Ajouter une photo"
+    const addPhotoButton = document.getElementById('add-photo');
+    const modalGallery = document.getElementById('modal-gallery');
+    const modalAddPhoto = document.getElementById('modal-addphoto');
+    
+    addPhotoButton.addEventListener('click', function() {
+      modalGallery.style.display = 'none';
+      modalAddPhoto.style.display = 'block';
+    });
+    
+    // Pour revenir à la modale de galerie
+    const modalAddPhotoBackButton = document.querySelector('#modal-addphoto i.fa-arrow-left');
+    modalAddPhotoBackButton.addEventListener('click', function() {
+      modalAddPhoto.style.display = 'none';
+      modalGallery.style.display = 'block';
+    });
+    
 
 // Affichage des fiches
     genererFiche(travaux);

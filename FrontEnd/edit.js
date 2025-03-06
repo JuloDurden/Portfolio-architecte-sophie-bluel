@@ -7,15 +7,11 @@ const userId = localStorage.getItem('userId');
 // Modification de la page d'accueil en fonction de la connexion de l'utilisateur
 if (token && userId) {
     // Ici vont être mises en places les modifications de la page d'accueil
-    // Création du bandeau du mode édition
-    const EditModeSection = document.querySelector('body');
-    const EditMode = document.createElement('div');
-    const EditPhantom = document.createElement('div');
-    EditMode.className = 'edit-mode';
-    EditPhantom.className = 'edit-phantom';
-    EditMode.innerHTML = "<i class=\"fa-regular fa-pen-to-square\"></i>\n<p>Mode édition</p>"
-    EditModeSection.insertBefore(EditMode, EditModeSection.querySelector('header'));
-    EditModeSection.insertBefore(EditPhantom, EditModeSection.querySelector('header'));
+    // Affichage du bandeau du mode édition
+    const editMode = document.querySelector('.edit-mode');
+    const editPhantom = document.querySelector('.edit-phantom');
+    editMode.style.display = "block"
+    editPhantom.style.display = "block"
 
     // Modification de terme login dans le menu
     const navLogin = document.getElementById('nav-login');
@@ -47,3 +43,36 @@ document.getElementById('nav-login').addEventListener('click', function() {
     // window.location.reload();
 
   });
+
+// Fonctionnement de la modale
+    // Ouverture de la modale en cliquant sur "modifier"
+    document.querySelector('.portfolio-title span').addEventListener('click', function() {
+        document.getElementById('modal1').style.display = 'block';
+    });
+
+    // Fermeture de la modale...
+    // ... en cliquant sur la croix
+    document.querySelectorAll('.fa-xmark').forEach(function(element) {
+        element.addEventListener('click', function() {
+            const modalGallery = document.getElementById('modal-gallery');
+            const modalAddPhoto = document.getElementById('modal-addphoto');
+            document.getElementById('modal1').style.display = 'none';
+            modalAddPhoto.style.display = 'none';
+            modalGallery.style.display = 'block';
+        });
+    });
+
+    // ... en cliquant sur l'overlay
+    document.getElementById('modal1').addEventListener('click', function(event) {
+        if (event.target === this) {
+            this.style.display = "none";
+            const modalGallery = document.getElementById('modal-gallery');
+            const modalAddPhoto = document.getElementById('modal-addphoto');
+            modalAddPhoto.style.display = 'none';
+            modalGallery.style.display = 'block';
+        }
+    });
+
+    document.querySelector('.modal-wrapper').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });

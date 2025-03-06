@@ -17,6 +17,13 @@
 	<script type="module" src="edit.js" defer></script>
 </head>
 <body>
+	<div class="edit-mode" style="display: none;">
+		<div>
+			<i class="fa-regular fa-pen-to-square"></i>
+			<span>Mode édition</span>
+		</div>
+	</div>
+	<div class="edit-phantom" style="display: none;"></div>
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
@@ -62,10 +69,9 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
-	<a href="#modal1" class="js-modal">Ouvrir la boîte modale</a>
-	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal1">
+	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal1" style="display: none;">
 		<div class="modal-wrapper">
-			<div id="modal-gallery" style="display: none;">
+			<div id="modal-gallery">
 				<i class="fa-solid fa-xmark fa-xl"></i>
 				<h3 id="titlemodal1">Galerie photo</h3>
 				<div class="galleryMod">
@@ -76,7 +82,7 @@
 					<button id="add-photo">Ajouter une photo</button>
 				</div>
 			</div>
-			<div id="modal-addphoto">
+			<div id="modal-addphoto" style="display: none;">
 				<i class="fa-solid fa-arrow-left fa-xl"></i>
 				<i class="fa-solid fa-xmark fa-xl"></i>
 				<h3 id="titlemodal2">Ajout photo</h3>
@@ -92,9 +98,6 @@
 					<label for="category">Catégorie</label>
 					<select name="category" id="category">
 						<option value="none" selected></option>
-						<option value="objects">Objets</option>
-						<option value="appartments">Appartements</option>
-						<option value="hotels-restaurants">Hotels & restaurants</option>
 					</select>
 					<div id="separator"></div>
 					<button id="validate" disabled>Valider</button>

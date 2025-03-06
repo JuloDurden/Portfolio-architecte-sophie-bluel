@@ -63,24 +63,30 @@
 		</form>
 	</section>
 	<a href="#modal1" class="js-modal">Ouvrir la boîte modale</a>
-	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal" style="display: none;">
+	<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal1">
 		<div class="modal-wrapper">
-			<div id="modal-gallery">
+			<div id="modal-gallery" style="display: none;">
+				<i class="fa-solid fa-xmark fa-xl"></i>
 				<h3 id="titlemodal1">Galerie photo</h3>
 				<div class="galleryMod">
 					<!-- Ici devrait s'insérer le code de genererFicheModal-->
 				</div>
-				<div id="separator"></div>
-				<button id="add-photo">Ajouter une photo</button>
-			</div>
-			<div id="modal-addphoto" style="display: none;">
-				<h3 id="titlemodal2">Ajout photo</h3>
-				<div class="add-frame">
-					<i class="fa-regular fa-image fa-5x"></i>
-					<button>+ Ajouter photo</button>
-					<p>jpg, png : 4mo max</p>
+				<div class="galleryMod-down">
+					<div id="separator"></div>
+					<button id="add-photo">Ajouter une photo</button>
 				</div>
+			</div>
+			<div id="modal-addphoto">
+				<i class="fa-solid fa-arrow-left fa-xl"></i>
+				<i class="fa-solid fa-xmark fa-xl"></i>
+				<h3 id="titlemodal2">Ajout photo</h3>
 				<form action="#" method="post">
+					<div class="add-frame">
+						<i class="fa-regular fa-image fa-5x"></i>
+						<input type="file" id="fileInput" accept=".jpg, .jpeg, .png" maxlength="4000000">
+  						<label for="fileInput" class="file-button">+ Ajouter photo</label>
+						<p>jpg, png : 4mo max</p>
+					</div>
 					<label for="title">Titre</label>
 					<input type="text" name="title" id="title">
 					<label for="category">Catégorie</label>

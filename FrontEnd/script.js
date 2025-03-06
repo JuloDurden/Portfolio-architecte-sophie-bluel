@@ -66,9 +66,26 @@
         });
     }
 
+// Génération de la fiche d'un travail dans la modale
+    function genererFicheModal(travaux) {
+        const galleryTravaux = document.querySelector('.galleryMod');
+        console.log('Div class= "gallery Modal" trouvée', galleryTravaux);
+        galleryTravaux.innerHTML = '';
+        travaux.forEach(travail => {
+            const ficheTravail = document.createElement('figure');
+            const imageTravail = document.createElement('img');
+            // const travailTrash = document.createElement('i');
+            imageTravail.src = travail.imageUrl;
+            // travailTrash.classList.add = 'fa-solid fa-trash-can'
+            galleryTravaux.appendChild(ficheTravail);
+            ficheTravail.appendChild(imageTravail);
+            // ficheTravail.appendChild(travailTrash);
+        })
+    }
+
 // Affichage des fiches
     genererFiche(travaux);
     document.querySelector('.boutons-tri button[data-categorie="Tous"]').classList.toggle('active');
-
+    genererFicheModal(travaux);
 
 export { boutonsTri };

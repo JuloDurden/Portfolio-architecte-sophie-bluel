@@ -232,6 +232,7 @@ button:hover {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
 	margin: auto;
@@ -327,10 +328,25 @@ input[type="submit"]{
     background: rgba(0, 0, 0, 0.8);
 }
 
+.fa-xmark {
+	position: absolute;
+	top: 26px;
+	right: 30px;
+	z-index: 999;
+}
+
+.fa-arrow-left {
+	position: absolute;
+	top: 26px;
+	left: 30px;
+	z-index: 999;
+}
+
 #separator {
+	width: 100%;
 	height: 47px;
 	border-bottom: 2px solid #B3B3B3;
-	margin-bottom: 32px;
+	clear: both;
 }
 
 .modal h3 {
@@ -347,13 +363,14 @@ input[type="submit"]{
     max-height: calc(100vh - 20px);
     padding: 0 105px 0 105px;
     background-color: #FFFFFF;
+	position: relative;
 }
 
 #modal-gallery {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	/* justify-content: center; */
+	/* align-items: center; */
 }
 
 #modal-gallery h3 {
@@ -362,12 +379,31 @@ input[type="submit"]{
 
 .galleryMod {
 	margin-top: 46px;
+	margin-bottom: 16px;
 	width: 100%;
 	display: grid;
 	justify-content: center;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	grid-column-gap: 25px;
-	grid-row-gap: 6px;
+	grid-column-gap: 7px;
+	grid-row-gap: 25px;
+}
+
+.galleryMod img {
+	width: 100%;
+
+}
+
+.galleryMod-down {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 38px;
+	width: 100%;
+}
+
+#add-photo {
+	padding: 10px 49px;
+	margin: 0 auto 45px auto;
 }
 
 #modal-gallery #add-photo {
@@ -380,8 +416,7 @@ input[type="submit"]{
 #modal-addphoto {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	margin-bottom: 55px;
+	margin: 60px auto 55px auto;
 }
 
 .add-frame {
@@ -394,29 +429,32 @@ input[type="submit"]{
 	gap: 6px;
 	background-color: #E8F1F6;
 	padding: 13px 0 19px 0;
-	margin-top: 36px;
+	margin: 36px 0 30px 0;
 }
 
 .add-frame i {
 	color: #B9C5CC;
 }
 
-.add-frame button {
+.add-frame input[type="file"] {
+	display: none;
+}
+
+.add-frame .file-button {
 	background-color: #B9C5CC;
 	padding: 10px 33px;
 	border: 0;
+	border-radius: 50px;
 	font-family: 'Work Sans';
 	font-weight: 500;
 	font-size: 14px;
 	color: #306685;
+	cursor: pointer;
 }
 
 .add-frame p {
+	margin-top: -10px;
 	font-size: 10px;
-}
-
-#modal-addphoto form {
-	margin-top: 30px;
 }
 
 #modal-addphoto label {
@@ -449,7 +487,7 @@ input[type="submit"]{
 	border: none;
 	font-size: 14px;
 	color: #FFFFFF;
-	margin: 0 auto;
+	margin: 32px auto 0 auto;
 	display: block;
 }
 

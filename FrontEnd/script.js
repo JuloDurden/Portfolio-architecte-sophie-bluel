@@ -1,5 +1,9 @@
 // Récupération des travaux depuis le back-end
-    const reponse = await fetch('http://localhost:5678/api/works');
+    const reponse = await fetch('http://localhost:5678/api/works', {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
     const travaux = await reponse.json();
     console.log('Réponse API script :', reponse);
     console.log('Récupération Travaux :', travaux);
@@ -42,7 +46,7 @@
         });
     });
 
-// Génération des options du select
+// Génération des catégories possibles lors de l'ajout d'une photo
 const select = document.getElementById('category');
 categories.forEach(categorie => {
     if (categorie !== 'Tous') {
@@ -78,21 +82,44 @@ categories.forEach(categorie => {
     }
 
 // Génération de la fiche d'un travail dans la modale
-    function genererFicheModal(travaux) {
-        const galleryTravaux = document.querySelector('.galleryMod');
-        console.log('Div class= "gallery Modal" trouvée', galleryTravaux);
-        galleryTravaux.innerHTML = '';
-        travaux.forEach(travail => {
-            const ficheTravail = document.createElement('figure');
-            const imageTravail = document.createElement('img');
-            // const travailTrash = document.createElement('i');
-            imageTravail.src = travail.imageUrl;
-            // travailTrash.classList.add = 'fa-solid fa-trash-can'
-            galleryTravaux.appendChild(ficheTravail);
-            ficheTravail.appendChild(imageTravail);
-            // ficheTravail.appendChild(travailTrash);
-        })
-    }
+function genererFicheModal(travaux) {
+    const galleryTravaux = document.querySelector('.galleryMod');
+    console.log('Div class= "gallery Modal" trouvée', galleryTravaux);
+    galleryTravaux.innerHTML = '';
+    travaux.forEach(travail => {
+        const ficheTravail = document.createElement('figure');
+        const imageTravail = document.createElement('img');
+        imageTravail.src = travail.imageUrl;
+        const travailTrash = document.createElement('i');
+        travailTrash.className = 'fa-solid fa-trash-can fa-border';
+        travailTrash.style.position = 'absolute';
+        travailTrash.style.top = '6px';
+        travailTrash.style.right = '6px';
+        travailTrash.style.cursor = 'pointer';
+        travailTrash.addEventListener('click', () => {
+            fetch(`http://localhost:5678/api/works/${travail.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then((reponse) => {
+                if (reponse.ok) {
+                    console.log('Travail supprimé avec succès');
+                    genererFicheModal(travaux.filter(t => t.id !== travail.id));
+                    genererFiche(travaux.filter(t => t.id !== travail.id));
+                } else {
+                    console.log('Erreur lors de la suppression du travail');
+                }
+            })
+            .catch((error) => console.error('Erreur lors de la suppression du travail', error));
+        });
+        ficheTravail.appendChild(imageTravail);
+        ficheTravail.appendChild(travailTrash);
+        ficheTravail.style.position = 'relative';
+        galleryTravaux.appendChild(ficheTravail);
+    })
+}
 
 // Changer le contenu de la modale en cliquant sur le bouton "Ajouter une photo"
     const addPhotoButton = document.getElementById('add-photo');

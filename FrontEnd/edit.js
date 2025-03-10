@@ -32,6 +32,7 @@ document.getElementById('nav-login').addEventListener('click', function() {
     // Effacer les valeurs du token et de l'userId du localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    console.log('Le token et le userId ont été effacés du localStorage');
   
     // Charger la page index.html sans les modifications
     window.location.href = 'index.html';

@@ -221,6 +221,7 @@ li:hover {
 		color: #1D6154;
 		background-color: #FFFEF8;
 		border: 1px solid #1D6154;
+		cursor: pointer;
 	}
 
 	.active {
@@ -235,7 +236,6 @@ li:hover {
 
 	.gallery {
 		width: 100%;
-		/* max-width: 1024px; */
 		display: grid;
 		justify-content: center;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -465,6 +465,13 @@ li:hover {
 			background-color: #1D6154;
 			color: #FFFFFF;
 			margin: 0 auto 45px auto;
+			cursor: pointer;
+		}
+
+		.fa-trash-can {
+			position: absolute;
+			top: 6px;
+			right: 6px;
 			cursor: pointer;
 		}
 

@@ -64,9 +64,8 @@ categories.forEach(categorie => {
         console.log('Div class="gallery" trouvée:', galleryTravaux);
         galleryTravaux.innerHTML = '';
         travaux.forEach(travail => {
-            // Création d'une fiche dédiée à un travail
+            // Création d'une fiche dédiée à un travail et de ses balises
             const ficheTravail = document.createElement('figure');
-            // Création des balises nécessaires
             const imageTravail = document.createElement('img');
             imageTravail.src = travail.imageUrl;
             const nomTravail =  document.createElement('figcaption');
@@ -75,9 +74,6 @@ categories.forEach(categorie => {
             galleryTravaux.appendChild(ficheTravail);
             ficheTravail.appendChild(imageTravail);
             ficheTravail.appendChild(nomTravail);
-            // Création de la balise catégorie pour la gérer sans l'afficher
-            // const catTravail = document.createElement("p");
-            // catTravail.innerText = travail.category.name;
         });
     }
 
@@ -87,15 +83,14 @@ function genererFicheModal(travaux) {
     console.log('Div class= "gallery Modal" trouvée', galleryTravaux);
     galleryTravaux.innerHTML = '';
     travaux.forEach(travail => {
+        // Création d'une fiche dédiée à un travail et de ses balises
         const ficheTravail = document.createElement('figure');
         const imageTravail = document.createElement('img');
         imageTravail.src = travail.imageUrl;
         const travailTrash = document.createElement('i');
+        // Ajout de l'icone de suppression de la fiche
         travailTrash.className = 'fa-solid fa-trash-can fa-border';
-        travailTrash.style.position = 'absolute';
-        travailTrash.style.top = '6px';
-        travailTrash.style.right = '6px';
-        travailTrash.style.cursor = 'pointer';
+        // Suppression d'une fiche en cliquant sur l'icone de suppression avec appel au Back-end
         travailTrash.addEventListener('click', () => {
             fetch(`http://localhost:5678/api/works/${travail.id}`, {
                 method: 'DELETE',
@@ -114,6 +109,7 @@ function genererFicheModal(travaux) {
             })
             .catch((error) => console.error('Erreur lors de la suppression du travail', error));
         });
+        // On rattache la balise fiche à la section Travaux
         ficheTravail.appendChild(imageTravail);
         ficheTravail.appendChild(travailTrash);
         ficheTravail.style.position = 'relative';

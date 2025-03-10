@@ -117,6 +117,26 @@ function genererFicheModal(travaux) {
     })
 }
 
+// Ajout d'un nouveau travail au back-end
+    const fileInput = document.getElementById('fileInputPhoto');
+    const titleInput = document.getElementById('titlePhoto');
+    const categorySelect = document.getElementById('categoryPhoto');
+    const validateButton = document.getElementById('validate');
+
+    // Ajout d'un événement pour vérifier l'état des champs
+    fileInput.addEventListener('change', checkFields);
+    titleInput.addEventListener('input', checkFields);
+    categorySelect.addEventListener('change', checkFields);
+
+    // Fonction pour vérifier si les champs sont remplis
+    function checkFields {
+        if (fileInput.files.length > 0 && titleInput.value.trim() !== '' && categorySelect.value !== '') {
+            validateButton.disabled = false;
+        } else {
+            validateButton.disabled = true;
+        }
+    }
+
 // Changer le contenu de la modale en cliquant sur le bouton "Ajouter une photo"
     const addPhotoButton = document.getElementById('add-photo');
     const modalGallery = document.getElementById('modal-gallery');

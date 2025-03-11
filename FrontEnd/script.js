@@ -192,14 +192,18 @@ function genererFicheModal(travaux) {
                 console.log('Travail ajouté avec succès', data);
 
                 // Mise à jour de la galerie et de la section portfolio
-                travaux.push(data); // Ajoute le nouveau travail à la liste
+                travaux.push(data);
                 genererFiche(travaux);
                 genererFicheModal(travaux);
 
                 // Réinitialisation des champs
+                document.querySelector('.add-frame i').style.display = 'block';
+                document.querySelector('.add-frame label').style.display = 'block';
+                document.querySelector('.add-frame p').style.display = 'block';
+                document.getElementById('imagePreview').style.display = 'none';
+                fileInput.textContent = '+ Ajouter photo';
                 titleInput.value = '';
                 categorySelect.value = '';
-                fileInput.value = '';
                 validateButton.disabled = true;
             })
             .catch((error) => {

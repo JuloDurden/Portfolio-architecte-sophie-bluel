@@ -128,19 +128,64 @@ function genererFicheModal(travaux) {
         const titleInput = document.getElementById('titlePhoto');
         const categorySelect = document.getElementById('categoryPhoto');
         const validateButton = document.getElementById('validate');
+        const errorMessage = document.getElementById('error-message');
 
     // Ajout d'un événement pour vérifier l'état des champs
-        fileInput.addEventListener('change', checkFields);
+        fileInput.addEventListener('change', () => {
+            checkFields();
+            if (checkFileValidity()) {
+                afficherApercuImage();
+            }
+        });
         titleInput.addEventListener('input', checkFields);
         categorySelect.addEventListener('change', checkFields);
 
-    // Fonction pour vérifier si les champs sont remplis et valides (taille de l'image)
+    // Vérification des champs dans l'ajout d'un travail et activation du bouton de validation
     function checkFields() {
-        const isFileValid = fileInput.files.length > 0 && fileInput.files[0].size < 4 * 1024 * 1024;
-        const isTitleValid = titleInput.value.trim() !== '';
-        const isCategoryValid = categorySelect.value !== '';
+        const isFileValid = checkFileValidity();
+        const isTitleValid = checkTitleValidity();
+        const isCategoryValid = checkCategoryValidity();
 
         validateButton.disabled = !(isFileValid && isTitleValid && isCategoryValid);
+    }
+
+    // Vérification de la validité du fichier image
+    function checkFileValidity() {
+        const file = fileInput.files[0];
+        const validTypes = ['image/jpeg', 'image/png'];
+        if (!file || !validTypes.includes(file.type) || file.size > 4 * 1024 * 1024) {
+            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Votre image doit être au format JPG ou PNG et faire moins de 4 Mo</p>';
+            return false;
+        } else {
+            clearErrorMessage();
+            return true;
+        }
+    }
+
+    // Vérification de la validité du titre
+    function checkTitleValidity() {
+        if (titleInput.value.trim() === '') {
+            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Veuillez entrer un titre</p>';
+            return false;
+        } else {
+            clearErrorMessage();
+            return true;
+        }
+    }
+
+    // Vérification de la validité de la catégorie
+    function checkCategoryValidity() {
+        if (categorySelect.value === '') {
+            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Veuillez sélectionner une catégorie</p>';
+            return false;
+        } else {
+            clearErrorMessage();
+            return true;
+        }
+    }
+
+    function clearErrorMessage() {
+        errorMessage.innerHTML = '';
     }
 
 // Ajout d'un événement pour poster un nouveau travail
@@ -218,27 +263,28 @@ function genererFicheModal(travaux) {
     fileButton.addEventListener('click', function () {
         fileInput.click();
     });
-// Ajout d'un événement pour afficher l'aperçu de l'image sélectionnée
-    fileInput.addEventListener('change', function () {
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const imagePreview = document.getElementById('imagePreview');
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
 
-                // Masquer les éléments existants
-                document.querySelector('.add-frame i').style.display = 'none';
-                document.querySelector('.add-frame input').style.display = 'none';
-                document.querySelector('.add-frame label').style.display = 'none';
-                document.querySelector('.add-frame p').style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+// Fonction pour afficher l'aperçu de l'image sélectionnée
+function afficherApercuImage() {
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
 
-// Changer le contenu de la modal en cliquant sur le bouton "Ajouter une photo"
+            // Masquer les éléments existants
+            document.querySelector('.add-frame i').style.display = 'none';
+            document.querySelector('.add-frame input').style.display = 'none';
+            document.querySelector('.add-frame label').style.display = 'none';
+            document.querySelector('.add-frame p').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+// Changer le contenu de la modale en cliquant sur le bouton "Ajouter une photo"
     const addPhotoButton = document.getElementById('add-photo');
     const modalGallery = document.getElementById('modal-gallery');
     const modalAddPhoto = document.getElementById('modal-addphoto');

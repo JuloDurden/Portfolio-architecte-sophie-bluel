@@ -159,8 +159,8 @@ function genererFicheModal(travaux) {
         // Vérification des valeurs avec console.log
         console.log('Image :', fileInput.files[0]);
         console.log('Titre :', titleInput.value);
-        console.log('Catégorie (avant conversion) :', categorySelect.value);
-        console.log('Catégorie (après conversion) :', Number(categorySelect.value));
+        console.log('Catégorie :', categorySelect.value);
+        
 
         // Récupération de l'ID de la catégorie sélectionnée
         const categoryId = Number(categorySelect.value);
@@ -169,7 +169,9 @@ function genererFicheModal(travaux) {
         const formData = new FormData();
         formData.append('image', fileInput.files[0]);
         formData.append('title', titleInput.value);
-        formData.append('categoryId', categoryId); // Conversion en nombre
+        formData.append('category', categoryId);
+        console.log(localStorage.getItem('token'));
+        console.log(formData);
 
         // Envoi de la requête POST
         fetch('http://localhost:5678/api/works', {
@@ -202,7 +204,6 @@ function genererFicheModal(travaux) {
             })
             .catch((error) => {
                 console.error('Erreur :', error);
-                alert('Une erreur est survenue lors de l\'ajout du travail.');
             });
     }
 
@@ -213,11 +214,24 @@ function genererFicheModal(travaux) {
     fileButton.addEventListener('click', function () {
         fileInput.click();
     });
-// Ajout d'un événement pour afficher le nom du fichier image sélectionné
+// Ajout d'un événement pour afficher l'aperçu de l'image sélectionnée
     fileInput.addEventListener('change', function () {
-        const fileName = fileInput.files[0].name;
-        fileButton.innerHTML = fileName;
-        // Ajouter un aperçu de l'image
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+
+                // Masquer les éléments existants
+                document.querySelector('.add-frame i').style.display = 'none';
+                document.querySelector('.add-frame input').style.display = 'none';
+                document.querySelector('.add-frame label').style.display = 'none';
+                document.querySelector('.add-frame p').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
     });
 
 // Changer le contenu de la modal en cliquant sur le bouton "Ajouter une photo"

@@ -16,6 +16,7 @@ if (token && userId) {
     // Modification de terme login dans le menu
     const navLogin = document.getElementById('nav-login');
     navLogin.innerText = 'logout';
+    navLogin.closest('a').href = 'index.html';
 
     // Création du bouton modifier à côté du titre de la galerie
     const btnModifier = document.querySelector('.portfolio-title');

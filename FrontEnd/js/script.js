@@ -1,5 +1,8 @@
+// Création de la constante ApiUrl pour l'URL de l'API
+const ApiUrl = 'http://localhost:5678/api';
+
 // Récupération des travaux depuis le back-end
-const response = await fetch('http://localhost:5678/api/works');
+const response = await fetch(`${ApiUrl}/works`);
 const travaux = await response.json();
 // Vérification de la réponse de l'API et des travaux récupérés
 console.log('Réponse API script :', response);
@@ -22,9 +25,15 @@ function genererFiche(travaux) {
     });
 }
 
-// Récupération des catégories uniques
-const categories = ['Tous', ...[...new Set(travaux.map(travail => travail.category.name))]];
-console.log('Catégories uniques :', categories);
+// Récupération des catégories depuis l'API pour les afficher dans les boutons de tri
+const responseCategories = await fetch(`${ApiUrl}/categories`);
+const categoriesApi = await responseCategories.json();
+// Récupération des noms des catégories
+const categoriesApiNames = categoriesApi.map(categorie => categorie.name);
+console.log('Noms des catégories API :', categoriesApiNames);
+// Ajout de la catégorie "Tous"
+const categories = ['Tous', ...categoriesApiNames];
+console.log('Catégories :', categories);
 
 // Création de l'élément pour les boutons de tri
 const portfolioSection = document.getElementById('portfolio');
@@ -60,25 +69,6 @@ document.querySelectorAll('.boutons-tri button').forEach(boutonTri => {
     });
 });
 
-// Récupération des catégories complètes (avec ID et nom) depuis l'API
-fetch('http://localhost:5678/api/categories')
-    .then((response) => response.json())
-    .then((categories) => {
-        console.log('Catégories complètes récupérées :', categories);
-
-        // Génération des catégories possibles lors de l'ajout d'une photo
-        const select = document.getElementById('categoryPhoto');
-        categories.forEach(categorie => {
-            if (categorie.name !== 'Tous') {
-                const option = document.createElement('option');
-                option.value = categorie.id.toString(); 
-                option.textContent = categorie.name; 
-                select.appendChild(option);
-            }
-        });
-    })
-    .catch((error) => console.error('Erreur lors de la récupération des catégories :', error));
-
 // Génération de la fiche d'un travail dans la modale
 function genererFicheModal(travaux) {
     const galleryTravaux = document.querySelector('.galleryMod');
@@ -94,7 +84,7 @@ function genererFicheModal(travaux) {
         travailTrash.className = 'fa-solid fa-trash-can fa-border';
         // Suppression d'une fiche en cliquant sur l'icone de suppression avec appel au Back-end
         travailTrash.addEventListener('click', () => {
-            fetch(`http://localhost:5678/api/works/${travail.id}`, {
+            fetch(`${ApiUrl}/works/${travail.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -120,140 +110,114 @@ function genererFicheModal(travaux) {
 }
 
 // Ajout d'un nouveau travail au back-end
-    // Collecte des éléments de la modale
-        const fileInput = document.getElementById('fileInputPhoto');
-        const titleInput = document.getElementById('titlePhoto');
-        const categorySelect = document.getElementById('categoryPhoto');
-        const validateButton = document.getElementById('validate');
-        const errorMessage = document.getElementById('error-message');
+// Génération des catégories possibles lors de l'ajout d'une photo
+const select = document.getElementById('categoryPhoto');
+categoriesApi.forEach(categorie => {
+    const option = document.createElement('option');
+    option.value = categorie.id.toString(); 
+    option.textContent = categorie.name; 
+    select.appendChild(option);
+});
 
-    // Ajout d'un événement pour vérifier l'état des champs
-        fileInput.addEventListener('change', () => {
-            checkFields();
-            if (checkFileValidity()) {
-                afficherApercuImage();
-            }
-        });
-        titleInput.addEventListener('input', checkFields);
-        categorySelect.addEventListener('change', checkFields);
+// Fermeture de la modale
+function fermetureModale() {
+    const modalGallery = document.getElementById('modal-gallery');
+    const modalAddPhoto = document.getElementById('modal-addphoto');
+    document.getElementById('modal1').style.display = 'none';
+    modalAddPhoto.style.display = 'none';
+    modalGallery.style.display = 'block';
+}
 
-    // Vérification des champs dans l'ajout d'un travail et activation du bouton de validation
-    function checkFields() {
-        const isFileValid = checkFileValidity();
-        const isTitleValid = checkTitleValidity();
-        const isCategoryValid = checkCategoryValidity();
+// Collecte des éléments de la modale
+const fileInput = document.getElementById('fileInputPhoto');
+const titleInput = document.getElementById('titlePhoto');
+const categorySelect = document.getElementById('categoryPhoto');
+const validateButton = document.getElementById('validate');
+const errorMessage = document.getElementById('error-message');
 
-        validateButton.disabled = !isFileValid;
-    }
-
-    // Vérification de la validité du fichier image
-    function checkFileValidity() {
-        const file = fileInput.files[0];
+// Ajout d'un événement pour afficher l'aperçu de l'image sélectionnée
+fileInput.addEventListener('change', function () {
+    const file = fileInput.files[0];
+    if (file) {
         const validTypes = ['image/jpeg', 'image/png'];
-        if (!file || !validTypes.includes(file.type) || file.size > 4 * 1024 * 1024) {
-            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Votre image doit être au format JPG ou PNG et faire moins de 4 Mo</p>';
-            return false;
+        if (validTypes.includes(file.type) && file.size < 4 * 1024 * 1024) {
+            afficherApercuImage();
+            errorMessage.innerHTML = '';
+            validateButton.disabled = false;
         } else {
-            clearErrorMessage();
-            return true;
+            errorMessage.innerHTML = '<span><i class="fa-solid fa-triangle-exclamation"></i> Votre image doit être au format JPG ou PNG et faire moins de 4 Mo</span>';
+            validateButton.disabled = true;
         }
+    } else {
+        validateButton.disabled = true;
+    }
+});
+
+
+// Ajout d'un événement pour poster un nouveau travail
+validateButton.addEventListener('click', ajoutTravail);
+
+function ajoutTravail(event) {
+    event.preventDefault();
+    const file = fileInput.files[0];
+    const title = titleInput.value.trim();
+    const category = categorySelect.value;
+    const categoryId = Number(category);
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('title', title);
+    formData.append('category', categoryId);
+
+    // Vérifier si le titre et la catégorie sont renseignés
+    let erreur = '';
+    if (title === '') {
+        erreur += '<span><i class="fa-solid fa-triangle-exclamation"></i> Veuillez ajouter un titre</span>';
+    }
+    if (category === '') {
+        erreur += '<span><i class="fa-solid fa-triangle-exclamation"></i> Veuillez sélectionner une catégorie</span>';
     }
 
-    // Vérification de la validité du titre
-    function checkTitleValidity() {
-        if (titleInput.value.trim() === '') {
-            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Veuillez entrer un titre</p>';
-            return false;
-        } else {
-            clearErrorMessage();
-            return true;
-        }
-    }
-
-    // Vérification de la validité de la catégorie
-    function checkCategoryValidity() {
-        if (categorySelect.value === '') {
-            errorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i><p>Veuillez sélectionner une catégorie</p>';
-            return false;
-        } else {
-            clearErrorMessage();
-            return true;
-        }
-    }
-
-    function clearErrorMessage() {
+    if (erreur !== '') {
+        errorMessage.innerHTML = erreur;
+        return;
+    } else {
         errorMessage.innerHTML = '';
     }
 
-// Ajout d'un événement pour poster un nouveau travail
-    validateButton.addEventListener('click', ajoutTravail);
-
-// Fonction pour poster un nouveau travail
-    function ajoutTravail(event) {
-        event.preventDefault();
-
-        // Validation des champs
-        if (!fileInput.files[0] || !titleInput.value || !categorySelect.value) {
-            alert('Veuillez remplir tous les champs.');
-            return;
-        }
-
-        // Vérification des valeurs avec console.log
-        console.log('Image :', fileInput.files[0]);
-        console.log('Titre :', titleInput.value);
-        console.log('Catégorie :', categorySelect.value);
-        
-
-        // Récupération de l'ID de la catégorie sélectionnée
-        const categoryId = Number(categorySelect.value);
-
-        // Création de l'objet FormData
-        const formData = new FormData();
-        formData.append('image', fileInput.files[0]);
-        formData.append('title', titleInput.value);
-        formData.append('category', categoryId);
-        console.log(localStorage.getItem('token'));
-        console.log(formData);
-
-        // Envoi de la requête POST
-        fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            },
-            body: formData
+    fetch(`${ApiUrl}/works`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: formData
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Erreur lors de l\'ajout du travail');
+            }
+            return response.json();
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Erreur lors de l\'ajout du travail');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('Travail ajouté avec succès', data);
+        .then((data) => {
+            console.log('Travail ajouté avec succès', data);
+            travaux.push(data);
+            genererFiche(travaux);
+            genererFicheModal(travaux);
 
-                // Mise à jour de la galerie et de la section portfolio
-                travaux.push(data);
-                genererFiche(travaux);
-                genererFicheModal(travaux);
-
-                // Réinitialisation des champs
-                document.querySelector('.add-frame i').style.display = 'block';
-                document.querySelector('.add-frame label').style.display = 'block';
-                document.querySelector('.add-frame p').style.display = 'block';
-                document.getElementById('imagePreview').style.display = 'none';
-                fileInput.textContent = '+ Ajouter photo';
-                titleInput.value = '';
-                categorySelect.value = '';
-                validateButton.disabled = true;
-            })
-            .catch((error) => {
-                console.error('Erreur :', error);
-            });
-    }
-
-
+            document.querySelector('.add-frame i').style.display = 'block';
+            document.querySelector('.add-frame label').style.display = 'block';
+            document.querySelector('.add-frame p').style.display = 'block';
+            document.getElementById('imagePreview').style.display = 'none';
+            fileInput.textContent = '+ Ajouter photo';
+            titleInput.value = '';
+            categorySelect.value = '';
+            validateButton.disabled = true;
+            fermetureModale();
+        })
+        .catch((error) => {
+            console.error('Erreur :', error);
+        });
+}
 
 // Ajout d'un événement pour déclencher l'ouverture de la fenêtre de sélection du fichier d'image
     const fileButton = document.querySelector('.file-button');
@@ -304,3 +268,4 @@ function afficherApercuImage() {
     genererFicheModal(travaux);
 
 export { boutonsTri };
+export { ApiUrl };

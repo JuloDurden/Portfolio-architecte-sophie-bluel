@@ -37,13 +37,6 @@ document.getElementById('nav-login').addEventListener('click', function() {
   
     // Charger la page index.html sans les modifications
     window.location.href = 'index.html';
-    // return false;
-
-    // window.location.replace('index.html');
-    
-    // window.history.pushState({}, '', 'index.html');
-    // window.location.reload();
-
   });
 
 // Fonctionnement de la modale
@@ -52,26 +45,24 @@ document.getElementById('nav-login').addEventListener('click', function() {
         document.getElementById('modal1').style.display = 'block';
     });
 
-    // Fermeture de la modale...
+    // Fermeture de la modale
+    function fermetureModale() {
+        const modalGallery = document.getElementById('modal-gallery');
+        const modalAddPhoto = document.getElementById('modal-addphoto');
+        document.getElementById('modal1').style.display = 'none';
+        modalAddPhoto.style.display = 'none';
+        modalGallery.style.display = 'block';
+    }
+
     // ... en cliquant sur la croix
     document.querySelectorAll('.fa-xmark').forEach(function(element) {
-        element.addEventListener('click', function() {
-            const modalGallery = document.getElementById('modal-gallery');
-            const modalAddPhoto = document.getElementById('modal-addphoto');
-            document.getElementById('modal1').style.display = 'none';
-            modalAddPhoto.style.display = 'none';
-            modalGallery.style.display = 'block';
-        });
+        element.addEventListener('click', fermetureModale);
     });
 
     // ... en cliquant sur l'overlay
     document.getElementById('modal1').addEventListener('click', function(event) {
         if (event.target === this) {
-            this.style.display = "none";
-            const modalGallery = document.getElementById('modal-gallery');
-            const modalAddPhoto = document.getElementById('modal-addphoto');
-            modalAddPhoto.style.display = 'none';
-            modalGallery.style.display = 'block';
+            fermetureModale();
         }
     });
 

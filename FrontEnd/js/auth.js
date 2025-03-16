@@ -1,3 +1,6 @@
+// Création de la constante ApiUrl pour l'URL de l'API
+const ApiUrl = 'http://localhost:5678/api';
+
 // Écoute d'événement pour le formulaire de connexion
     document.getElementById('login').addEventListener('submit', (e) => {
         e.preventDefault();
@@ -5,7 +8,7 @@
         const password = document.getElementById('password').value;
     
     // Envoi des informations d'identification vers le back-end
-        fetch('http://localhost:5678/api/users/login', {
+        fetch(`${ApiUrl}/users/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

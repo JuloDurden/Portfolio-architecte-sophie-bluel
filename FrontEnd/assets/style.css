@@ -357,12 +357,13 @@ li:hover {
 
 	#error-message {
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		margin: 1em 0 0 0;
 		gap: 5px;
 		color: red;
-}
+	}
 
 /***** Modal Window *****/
 	/**** General ****/
@@ -459,7 +460,8 @@ li:hover {
 
 		.galleryMod img {
 			width: 100%;
-			height: 108px;
+			max-height: 108px;
+			aspect-ratio: 3 / 4 ;
 			box-sizing: border-box;
 			object-fit: cover;
 

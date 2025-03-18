@@ -26,46 +26,47 @@ if (token && userId) {
 
     // Suppression de la div boutons-tri
     boutonsTri.classList.add('hidden');
-}
 
-// Ajouter un événement click sur le bouton nav-login
-document.getElementById('nav-login').addEventListener('click', function() {
-    // Effacer les valeurs du token et de l'userId du localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    console.log('Le token et le userId ont été effacés du localStorage');
-  
-    // Charger la page index.html sans les modifications
-    window.location.href = 'index.html';
-  });
 
-// Fonctionnement de la modale
-    // Ouverture de la modale en cliquant sur "modifier"
-    document.querySelector('.portfolio-title span').addEventListener('click', function() {
-        document.getElementById('modal1').style.display = 'block';
+    // Ajouter un événement click sur le bouton nav-login
+    document.getElementById('nav-login').addEventListener('click', function() {
+        // Effacer les valeurs du token et de l'userId du localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        console.log('Le token et le userId ont été effacés du localStorage');
+    
+        // Charger la page index.html sans les modifications
+        window.location.href = 'index.html';
     });
 
-    // Fermeture de la modale
-    function fermetureModale() {
-        const modalGallery = document.getElementById('modal-gallery');
-        const modalAddPhoto = document.getElementById('modal-addphoto');
-        document.getElementById('modal1').style.display = 'none';
-        modalAddPhoto.style.display = 'none';
-        modalGallery.style.display = 'block';
-    }
+    // Fonctionnement de la modale
+        // Ouverture de la modale en cliquant sur "modifier"
+        document.querySelector('.portfolio-title span').addEventListener('click', function() {
+            document.getElementById('modal1').style.display = 'block';
+        });
 
-    // ... en cliquant sur la croix
-    document.querySelectorAll('.fa-xmark').forEach(function(element) {
-        element.addEventListener('click', fermetureModale);
-    });
-
-    // ... en cliquant sur l'overlay
-    document.getElementById('modal1').addEventListener('click', function(event) {
-        if (event.target === this) {
-            fermetureModale();
+        // Fermeture de la modale
+        function fermetureModale() {
+            const modalGallery = document.getElementById('modal-gallery');
+            const modalAddPhoto = document.getElementById('modal-addphoto');
+            document.getElementById('modal1').style.display = 'none';
+            modalAddPhoto.style.display = 'none';
+            modalGallery.style.display = 'block';
         }
-    });
 
-    document.querySelector('.modal-wrapper').addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
+        // ... en cliquant sur la croix
+        document.querySelectorAll('.fa-xmark').forEach(function(element) {
+            element.addEventListener('click', fermetureModale);
+        });
+
+        // ... en cliquant sur l'overlay
+        document.getElementById('modal1').addEventListener('click', function(event) {
+            if (event.target === this) {
+                fermetureModale();
+            }
+        });
+
+        document.querySelector('.modal-wrapper').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+}

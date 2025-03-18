@@ -19,7 +19,7 @@ const ApiUrl = 'http://localhost:5678/api';
         .then((data) => {
             if (data.error) {
                 console.log('Erreur de connexion');
-                document.getElementById('error-message').innerHTML = '<i class=\"fa-solid fa-triangle-exclamation\"></i><p>Informations de connexion incorrectes</p>';
+                document.getElementById('error-message').innerHTML = '<span><i class=\"fa-solid fa-triangle-exclamation\"></i> Informations de connexion incorrectes</span>';
             } else {
                 console.log('Connexion réussie');
                 // On stocke le token et le userId dans le stockage local ou une variable

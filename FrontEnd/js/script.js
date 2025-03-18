@@ -203,15 +203,7 @@ function ajoutTravail(event) {
             travaux.push(data);
             genererFiche(travaux);
             genererFicheModal(travaux);
-
-            document.querySelector('.add-frame i').style.display = 'block';
-            document.querySelector('.add-frame label').style.display = 'block';
-            document.querySelector('.add-frame p').style.display = 'block';
-            document.getElementById('imagePreview').style.display = 'none';
-            fileInput.textContent = '+ Ajouter photo';
-            titleInput.value = '';
-            categorySelect.value = '';
-            validateButton.disabled = true;
+            initModalAddPhoto();
             fermetureModale();
         })
         .catch((error) => {
@@ -243,6 +235,19 @@ function afficherApercuImage() {
         };
         reader.readAsDataURL(file);
     }
+}
+
+// Réinitialiser la vue de la modale d'ajout de travail
+function initModalAddPhoto() {
+    document.querySelector('.add-frame i').style.display = 'block';
+    document.querySelector('.add-frame label').style.display = 'block';
+    document.querySelector('.add-frame p').style.display = 'block';
+    document.getElementById('imagePreview').style.display = 'none';
+    fileInput.textContent = '+ Ajouter photo';
+    titleInput.value = '';
+    categorySelect.value = '';
+    errorMessage.innerHTML = '';
+    validateButton.disabled = true;
 }
 
 // Changer le contenu de la modale en cliquant sur le bouton "Ajouter une photo"

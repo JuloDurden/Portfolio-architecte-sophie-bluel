@@ -45,6 +45,25 @@ if (token && userId) {
             document.getElementById('modal1').style.display = 'block';
         });
 
+        // Réinitialisation de la fenêtre d'ajout de photo
+        function initModalAddPhoto() {
+            const fileInput = document.getElementById('fileInputPhoto');
+            const titleInput = document.getElementById('titlePhoto');
+            const categorySelect = document.getElementById('categoryPhoto');
+            const validateButton = document.getElementById('validate');
+            const errorMessage = document.getElementById('error-message')
+
+            document.querySelector('.add-frame i').style.display = 'block';
+            document.querySelector('.add-frame label').style.display = 'block';
+            document.querySelector('.add-frame p').style.display = 'block';
+            document.getElementById('imagePreview').style.display = 'none';
+            fileInput.textContent = '+ Ajouter photo';
+            titleInput.value = '';
+            categorySelect.value = '';
+            errorMessage.innerHTML = '';
+            validateButton.disabled = true;
+        }
+
         // Fermeture de la modale
         function fermetureModale() {
             const modalGallery = document.getElementById('modal-gallery');
@@ -52,6 +71,7 @@ if (token && userId) {
             document.getElementById('modal1').style.display = 'none';
             modalAddPhoto.style.display = 'none';
             modalGallery.style.display = 'block';
+            initModalAddPhoto();
         }
 
         // ... en cliquant sur la croix
